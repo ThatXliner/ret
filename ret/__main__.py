@@ -7,7 +7,8 @@ Initial author: Bryan Hu .
 
 Version: v0.1.0
 
-A regex tool for the command line
+A pure-python command-line regular expression tool for
+stream filtering, extracting, and parsing.
 
 Better than ``grep`` 😃👍
 
