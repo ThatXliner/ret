@@ -27,7 +27,7 @@ Usage
 Example
 ~~~~~~~~
 
-You can use ``ret`` to extract text via regex capture groups:
+You can use ``Ret`` to extract text via regex capture groups:
 
 .. code-block:: bash
 
@@ -39,6 +39,7 @@ You can use ``ret`` to extract text via regex capture groups:
 finding all occurrences of a pattern:
 
 .. code-block:: bash
+
     $ ls | ret ".*\.py" findall
     foo.py
     bar.py
@@ -49,7 +50,7 @@ I love ``grep``. But grep isn't really for text extraction.
 
 For example, you cannot extract regexes via capture groups.
 
-Since I wanted that functionality, I decided to build this, ``ret``.
+Since I wanted that functionality, I decided to build this, ``Ret``.
 
 Why the name?
 ~~~~~~~~~~~~~
@@ -59,6 +60,11 @@ Why the name?
 
 Why it can't replace grep (yet)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Grep is great for searching directories. Currently, ``ret`` can only read from a file or stdin.
+Grep is great for searching directories
+Currently, ``ret`` can only read from a file or stdin.
+
+Furthermore, you cannot guarantee that ``ret`` is installed on the machine.
+
+Also, ``Ret`` relies on the (slow) python regex engine.
 
 Feel free to contribute!
