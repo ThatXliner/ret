@@ -31,12 +31,12 @@ parser = argparse.ArgumentParser(
     prog="ret",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
-parser.add_argument("regex", help="The regex to use", nargs="+")
+
+parser.add_argument("regex", help="The regex to use")
 parser.add_argument(
     "action",
     choices=ACTION_CHOICES,
-    nargs="?",
-    help="What to do with the regex",
+    help="What to do with the regex. Options are %s" % ", ".join(ACTION_CHOICES),
     metavar="ACTION",
     default="search",
 )
