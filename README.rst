@@ -54,7 +54,7 @@ Since I wanted that functionality, I decided to build this, ``ret``.
 Why the name?
 ~~~~~~~~~~~~~
 
-``Ret`` is an acronym for **r**egular **e**xpression **t**ool.
+``Ret`` is an acronym for **r** egular **e** xpression **t** ool.
 
 
 Why it can't replace grep (yet)
