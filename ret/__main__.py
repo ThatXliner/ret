@@ -124,10 +124,7 @@ def main() -> int:
         operator.or_,  # type: ignore
         args.re_flags if args.re_flags is not None else [0],  # type: ignore
     )
-    pattern: Pattern[str] = re.compile(
-        args.regex,  # type: ignore
-        flags=re_flags if re_flags else 0,
-    )
+    pattern: Pattern[str] = re.compile(args.regex, flags=re_flags or 0)
 
     # NOTE: Memory-map?
     with args.input as input_file:  # type: ignore
@@ -162,7 +159,7 @@ def main() -> int:
             group: Union[str, int] = str(args.group)  # type: ignore
         else :
             raise Exception("Something weird happened.")
-            
+
         # Print the group
         try:
             assert output
