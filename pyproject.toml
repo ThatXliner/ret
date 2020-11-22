@@ -3,6 +3,31 @@ name = "ret"
 version = "0.1.0"
 description = "A pure-python regex tool for the command-line"
 authors = ["Bryan Hu <bryan.hu.2020@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.rst"
+keywords = ["regex", "cli", "tool", "grep"]
+classifiers = [
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",  # Optional support
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Development Status :: 4 - Beta",
+    "Natural Language :: English",
+    "Operating System :: POSIX",
+    "Environment :: Console",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+packages = [{include = "ret"}]
+homepage = "https://github.com/ThatXliner/ret/"
+
+[tool.poetry.urls]
+"Source Code" = "https://github.com/ThatXliner/ret"
+"Bug Tracker" = "https://github.com/ThatXliner/ret/issues"
+"Say Thanks! "= "https://saythanks.io/to/bryan.hu.2020@gmail.com"
+
+[tool.poetry.scripts]
+ret = "ret.__main__.py:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
