@@ -14,13 +14,15 @@ Better than ``grep`` 😃👍
 """
 import argparse
 import functools
-import re
-import sys
-import operator
-from typing import List, Match, Optional, Pattern, Union
-import collections.abc
-from . import __version__
 
+import re
+
+
+import operator
+import sys
+from typing import List, Match, Optional, Pattern, Union
+
+from . import __version__
 
 ACTION_CHOICES: List[str] = ["match", "m", "search", "s", "findall", "f"]
 
@@ -79,8 +81,8 @@ flags.add_argument(
     "-a",
     "--ascii",
     action="append_const",
-    help="Use ascii-only matching",
     const=re.ASCII,
+    help="Use ascii-only matching",
     dest="re_flags",
 )
 flags.add_argument(
@@ -109,51 +111,68 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-RE_FLAGS: int = functools.reduce(
-    operator.or_, args.re_flags if args.re_flags is not None else [], 0  # type: ignore
-)
-pattern: Pattern[str] = re.compile(args.regex[0], flags=RE_FLAGS)  # type: ignore
-action: str = args.action  # "match", "search" or "findall"
 
-# NOTE: Memory-map?
-with args.input as f:  # type: ignore
-    INPUT: str = f.read()  # type: ignore
+def main() -> int:
+    """The main CLI entry point.
 
-# Determine what action to take
-if args.action in {"match", "m"}:  # type: ignore
-    OUTPUT: Union[List[str], Optional[Match[str]]] = pattern.match(INPUT)
-elif args.action in {"search", "s"}:  # type: ignore
-    OUTPUT = pattern.search(INPUT)
+    Returns
+    -------
+    int
+        The status code
 
-elif args.action in {"findall", "f"}:  # type: ignore
-    OUTPUT = pattern.findall(INPUT)
-# elif args.action in {"split", "sp"}:  # type: ignore
-#     OUTPUT = pattern.split(INPUT)
+    """
 
-else:
-    raise NotImplementedError
+    re_flags: int = functools.reduce(
+        operator.or_,  # type: ignore
+        args.re_flags if args.re_flags is not None else [0],  # type: ignore
+    )
+    pattern: Pattern[str] = re.compile(
+        args.regex,  # type: ignore
+        flags=re_flags if re_flags else 0,
+    )
 
-if not OUTPUT:  # It didn't match 😔
-    sys.exit(1)
+    # NOTE: Memory-map?
+    with args.input as input_file:  # type: ignore
+        text_input: str = input_file.read()  # type: ignore
 
-# If the output is a sequence
-elif isinstance(OUTPUT, collections.abc.Sequence):
-    print("\n".join(OUTPUT))
+    # Determine what action to take
+    if args.action in {"match", "m"}:  # type: ignore
+        output: Union[List[str], Optional[Match[str]]] = pattern.match(text_input)
+    elif args.action in {"search", "s"}:  # type: ignore
+        output = pattern.search(text_input)
 
-else:  # It matched 😄
-    # Get the group to return (default is 0, the entire match)
-    try:
-        GROUP: Union[str, int] = int(args.group)  # type: ignore
-    except ValueError:
-        GROUP: Union[str, int] = str(args.group)  # type: ignore
+    elif args.action in {"findall", "f"}:  # type: ignore
+        output = pattern.findall(text_input)
 
-    # Print the group
-    try:
-        assert OUTPUT
-        print(OUTPUT[GROUP])
-    except IndexError as index:
-        raise ValueError(
-            f"{GROUP} is not a valid group identifier. You probably did a typo..."
-        ) from index
+    # elif args.action in {"split", "sp"}:  # type: ignore
+    #     output = pattern.split(INPUT)
+    else:
+        raise NotImplementedError
 
-sys.exit(0)
+    if not output:  # It didn't match 😔
+        return 1
+
+    # It matched 😄
+    # If the output is a sequence (findall)
+    if isinstance(output, list):
+        print("\n".join(output))
+    else:
+        # Get the group to return (default is 0, the entire match)
+        try:
+            group: Union[str, int] = int(args.group)  # type: ignore
+        except ValueError:
+            group: Union[str, int] = str(args.group)  # type: ignore
+
+        # Print the group
+        try:
+            assert output
+            print(output[group])
+        except IndexError as index:
+            raise ValueError(
+                f"{group} is not a valid group identifier. You probably did a typo..."
+            ) from index
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
