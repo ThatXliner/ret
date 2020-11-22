@@ -126,7 +126,7 @@ def main() -> int:
     )
     pattern: Pattern[str] = re.compile(
         args.regex,  # type: ignore
-        flags=re_flags if re_flags else 0,
+        flags=re_flags or 0,
     )
 
     # NOTE: Memory-map?
@@ -153,37 +153,23 @@ def main() -> int:
         return 1
 
     # It matched 😄
-    # If the output is an iterable (findall)
-    if isinstance(output, Iterable):
-        # Get the group to return (default is 0, the entire match)
-        try:
-            group: Union[str, int] = int(args.group)  # type: ignore
-        except ValueError:
-            group: Union[str, int] = str(args.group)  # type: ignore
-        # Print the group
-        try:
-            assert output
+    # Get the group to return (default is 0, the entire match)
+    try:
+        group: Union[str, int] = int(args.group)  # type: ignore
+    except ValueError:
+        group: Union[str, int] = str(args.group)  # type: ignore
+
+    # Print the group
+    try:
+        assert output
+        if isinstance(output, Iterable):  # If it was `findall`
             print("\n".join([match[group] for match in output]))
-        except IndexError as index:
-            raise ValueError(
-                f"{group} is not a valid group identifier. You probably did a typo..."
-            ) from index
-
-    else:
-        # Get the group to return (default is 0, the entire match)
-        try:
-            group: Union[str, int] = int(args.group)  # type: ignore
-        except ValueError:
-            group: Union[str, int] = str(args.group)  # type: ignore
-
-        # Print the group
-        try:
-            assert output
+        else:
             print(output[group])
-        except IndexError as index:
-            raise ValueError(
-                f"{group} is not a valid group identifier. You probably did a typo..."
-            ) from index
+    except IndexError as index:
+        raise ValueError(
+            f"{group} is not a valid group identifier. You probably did a typo..."
+        ) from index
     return 0
 
 
