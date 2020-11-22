@@ -156,11 +156,13 @@ def main() -> int:
         print("\n".join(output))
     else:
         # Get the group to return (default is 0, the entire match)
-        try:
+        if args.group is int : 
             group: Union[str, int] = int(args.group)  # type: ignore
-        except ValueError:
+        elif args.group is str:
             group: Union[str, int] = str(args.group)  # type: ignore
-
+        else :
+            raise Exception("Something weird happened.")
+            
         # Print the group
         try:
             assert output
