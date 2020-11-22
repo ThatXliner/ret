@@ -19,7 +19,7 @@ import operator
 import re
 import sys
 from typing import List, Match, Optional, Pattern, Union
-
+from collections.abc import Iterable
 from . import __version__
 
 ACTION_CHOICES: List[str] = ["match", "m", "search", "s", "findall", "f"]
@@ -140,7 +140,7 @@ def main() -> int:
         output = pattern.search(text_input)
 
     elif args.action in {"findall", "f"}:  # type: ignore
-        output = pattern.findall(text_input)
+        output = pattern.finditer(text_input)
 
     # elif args.action in {"split", "sp"}:  # type: ignore
     #     output = pattern.split(INPUT)
@@ -151,9 +151,22 @@ def main() -> int:
         return 1
 
     # It matched 😄
-    # If the output is a sequence (findall)
-    if isinstance(output, list):
-        print("\n".join(output))
+    # If the output is an iterable (findall)
+    if isinstance(output, Iterable):
+        # Get the group to return (default is 0, the entire match)
+        try:
+            group: Union[str, int] = int(args.group)  # type: ignore
+        except ValueError:
+            group: Union[str, int] = str(args.group)  # type: ignore
+        # Print the group
+        try:
+            assert output
+            print("\n".join([match[group] for match in output]))
+        except IndexError as index:
+            raise ValueError(
+                f"{group} is not a valid group identifier. You probably did a typo..."
+            ) from index
+
     else:
         # Get the group to return (default is 0, the entire match)
         try:
