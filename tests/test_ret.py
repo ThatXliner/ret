@@ -21,6 +21,10 @@ class TestClass:
                 )
                 + "\n"
             )
+            assert (
+                _pipe_command("ls -1 ", R' python -m ret "(\w+)\..{4}" f -g 1')
+                == "\n".join(("poetry", "pyproject")) + "\n"
+            )  # All files with an extension of length 4
         else:  # Windows tests
             assert True
 

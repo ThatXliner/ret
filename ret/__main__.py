@@ -18,8 +18,8 @@ import functools
 import operator
 import re
 import sys
-from typing import List, Match, Optional, Pattern, Union
-
+from typing import List, Match, Optional, Pattern, Union, Iterator
+from collections.abc import Iterable
 from . import __version__
 
 ACTION_CHOICES: List[str] = ["match", "m", "search", "s", "findall", "f"]
@@ -126,7 +126,7 @@ def main() -> int:
     )
     pattern: Pattern[str] = re.compile(
         args.regex,  # type: ignore
-        flags=re_flags if re_flags else 0,
+        flags=re_flags or 0,
     )
 
     # NOTE: Memory-map?
@@ -135,12 +135,14 @@ def main() -> int:
 
     # Determine what action to take
     if args.action in {"match", "m"}:  # type: ignore
-        output: Union[List[str], Optional[Match[str]]] = pattern.match(text_input)
+        output: Union[Iterator[Match[str]], Optional[Match[str]]] = pattern.match(
+            text_input
+        )
     elif args.action in {"search", "s"}:  # type: ignore
         output = pattern.search(text_input)
 
     elif args.action in {"findall", "f"}:  # type: ignore
-        output = pattern.findall(text_input)
+        output = pattern.finditer(text_input)
 
     # elif args.action in {"split", "sp"}:  # type: ignore
     #     output = pattern.split(INPUT)
@@ -151,24 +153,23 @@ def main() -> int:
         return 1
 
     # It matched 😄
-    # If the output is a sequence (findall)
-    if isinstance(output, list):
-        print("\n".join(output))
-    else:
-        # Get the group to return (default is 0, the entire match)
-        try:
-            group: Union[str, int] = int(args.group)  # type: ignore
-        except ValueError:
-            group: Union[str, int] = str(args.group)  # type: ignore
+    # Get the group to return (default is 0, the entire match)
+    try:
+        group: Union[str, int] = int(args.group)  # type: ignore
+    except ValueError:
+        group: Union[str, int] = str(args.group)  # type: ignore
 
-        # Print the group
-        try:
-            assert output
+    # Print the group
+    try:
+        assert output
+        if isinstance(output, Iterable):  # If it was `findall`
+            print("\n".join([match[group] for match in output]))
+        else:
             print(output[group])
-        except IndexError as index:
-            raise ValueError(
-                f"{group} is not a valid group identifier. You probably did a typo..."
-            ) from index
+    except IndexError as index:
+        raise ValueError(
+            f"{group} is not a valid group identifier. You probably did a typo..."
+        ) from index
     return 0
 
 
