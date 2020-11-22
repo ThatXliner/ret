@@ -15,11 +15,8 @@ Better than ``grep`` 😃👍
 """
 import argparse
 import functools
-
-import re
-
-
 import operator
+import re
 import sys
 from typing import List, Match, Optional, Pattern, Union
 
