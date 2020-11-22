@@ -46,6 +46,16 @@ bandit = "^1.6.2"
 Pygments = "^2.7.2"
 docutils = "^0.16"
 
+[pycodestyle]
+max_line_length = 90
+ignore = "E4"
+[tool.autopep8]
+max_line_length = 90
+ignore = "E4"
+[tool.isort]
+profile = "black"
+line_length = 90
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
