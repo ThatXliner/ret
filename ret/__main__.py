@@ -18,7 +18,7 @@ import functools
 import operator
 import re
 import sys
-from typing import List, Match, Optional, Pattern, Union
+from typing import List, Match, Optional, Pattern, Union, Iterator
 from collections.abc import Iterable
 from . import __version__
 
@@ -135,7 +135,9 @@ def main() -> int:
 
     # Determine what action to take
     if args.action in {"match", "m"}:  # type: ignore
-        output: Union[List[str], Optional[Match[str]]] = pattern.match(text_input)
+        output: Union[Iterator[Match[str]], Optional[Match[str]]] = pattern.match(
+            text_input
+        )
     elif args.action in {"search", "s"}:  # type: ignore
         output = pattern.search(text_input)
 
