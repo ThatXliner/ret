@@ -18,7 +18,7 @@ import functools
 import operator
 import re
 import sys
-from typing import List, Match, Optional, Pattern, Union, Iterator
+from typing import List, Match, Optional, Pattern, Union, Iterator, NoReturn
 from collections.abc import Iterable
 from . import __version__
 
@@ -109,19 +109,18 @@ parser.add_argument(
     default=False,
 )
 
-args = parser.parse_args()
 
-
-def main() -> int:
+def main() -> NoReturn:
     """The main CLI entry point.
 
     Returns
     -------
-    int
-        The status code
+    NoReturn
+        It exits via sys.exit
 
     """
 
+    args = parser.parse_args()
     re_flags: int = functools.reduce(
         operator.or_,  # type: ignore
         args.re_flags if args.re_flags is not None else [0],  # type: ignore
@@ -152,7 +151,7 @@ def main() -> int:
         raise NotImplementedError
 
     if not output:  # It didn't match 😔
-        return 1
+        sys.exit(1)
 
     # It matched 😄
     # Get the group to return (default is 0, the entire match)
@@ -172,8 +171,8 @@ def main() -> int:
         raise ValueError(
             f"{group} is not a valid group identifier. You probably did a typo..."
         ) from index
-    return 0
+    sys.exit(0)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
