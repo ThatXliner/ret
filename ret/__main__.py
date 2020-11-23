@@ -53,7 +53,9 @@ parser.add_argument(
     "--version",
     action="version",
     version=__version__,
-    help="Print the version information and exit",
+    help="Print the version information and exit. "
+    "It's very minimal: just the version number. "
+    "No program name, nada.",
 )
 
 
