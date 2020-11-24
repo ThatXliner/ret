@@ -5,7 +5,7 @@ Initial author: Bryan Hu .
 
 @ThatXliner .
 
-Version: v0.1.1
+Version: v0.1.2
 
 A pure-python command-line regular expression tool for
 stream filtering, extracting, and parsing.
