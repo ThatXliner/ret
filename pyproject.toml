@@ -26,7 +26,7 @@ homepage = "https://github.com/ThatXliner/ret/"
 "Say Thanks! "= "https://saythanks.io/to/bryan.hu.2020@gmail.com"
 
 [tool.poetry.scripts]
-ret = "ret.__main__.py:main"
+ret = "ret.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
