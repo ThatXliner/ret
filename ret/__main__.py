@@ -66,7 +66,7 @@ flags.add_argument(
     "--ignore-case",
     action="append_const",
     const=re.IGNORECASE,
-    help="Regex match case insensitively",
+    help="Match case-insensitively",
     dest="re_flags",
 )
 flags.add_argument(
@@ -74,7 +74,7 @@ flags.add_argument(
     "--extended-re",
     action="append_const",
     const=re.VERBOSE,
-    help="Use extended regex",
+    help="Use extended regex where whitespace doesn't matter and you can use # Comments",
     dest="re_flags",
 )
 flags.add_argument(
@@ -82,7 +82,7 @@ flags.add_argument(
     "--ascii",
     action="append_const",
     const=re.ASCII,
-    help="Use ascii-only matching",
+    help=R"Make \w, \W, \b, \B, \d, \D, \s and \S only match ASCII characters",
     dest="re_flags",
 )
 flags.add_argument(
@@ -90,7 +90,8 @@ flags.add_argument(
     "--multiline",
     action="append_const",
     const=re.MULTILINE,
-    help="Use multiline matching",
+    help="Use multiline matching. `^` and `$` will now match the beginning "
+    "and end of each line.",
     dest="re_flags",
 )
 flags.add_argument(
@@ -98,7 +99,7 @@ flags.add_argument(
     "--dotall",
     action="append_const",
     const=re.DOTALL,
-    help="Use dot-all matching",
+    help="Make `.` also match whitespace characters",
     dest="re_flags",
 )
 parser.add_argument(
