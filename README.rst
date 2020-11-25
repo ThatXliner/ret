@@ -24,6 +24,12 @@ or using pipx
 
 Ret is pure python (3.6+) with no dependencies.
 
+.. note::
+
+	If you want to install the bleeding edge version of ret, right when it gets pushed to master, see `here <https://github.com/ThatXliner/ret/blob/master/CONTRIBUTING.md>`_ for instructions.
+
+
+
 Usage
 ------
 
