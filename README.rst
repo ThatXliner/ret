@@ -47,7 +47,7 @@ You can use ``Ret`` to extract text via regex capture groups:
     foo.py
     bar.py
 
-and even all occurrences of a pattern with capture groups:
+and even all occurrences of a pattern **with capture groups**:
 
 .. code-block:: bash
 
@@ -55,7 +55,18 @@ and even all occurrences of a pattern with capture groups:
     foo
     bar
 
-and much much more.
+And remember, this is python regex: a very powerful regular expression engine.
+
+The possibilities of usage are endless.
+
+Demonstration
+~~~~~~~~~~~~~
+
+.. image:: https://raw.githubusercontent.com/ThatXliner/ret/master/assets/demo.svg
+   :alt: Demonstration photo
+
+
+This is only just *one* use case.
 
 Background
 -------------
@@ -68,7 +79,7 @@ Since I wanted that functionality, I decided to build this, ``Ret``.
 Why the name?
 ~~~~~~~~~~~~~
 
-``Ret`` is an acronym for **r**\ egular **e**\ xpression **t**\ tool.
+``Ret`` is an acronym for **r**\ egular **e**\ xpression **t**\ ool.
 
 
 Why it can't replace grep (yet)
