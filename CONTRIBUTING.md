@@ -56,3 +56,14 @@ python3 -m pip install dist/ret-X.X.X-py3-none-any.whl
 ### Step 5: Enjoy it
 
 Though be warned, there may be bugs :bug:!
+
+## Ways to contribute
+
+This list is just some ideas of what you can do besides code changes:
+
+ - Writing documentation for ret
+ - Suggesting new features and improvements
+ - Helping us brush up the UI
+ - Adding more test coverage!
+
+Now, have fun contributing!
