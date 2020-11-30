@@ -11,7 +11,7 @@ You can install this via
 
 .. code-block:: bash
 
-    python3 -m pip install ret
+    $ python3 -m pip install ret
     ✨🍰✨
 
 
@@ -19,7 +19,7 @@ or using pipx
 
 .. code-block:: bash
 
-    pipx install ret
+    $ pipx install ret
     ✨🍰✨
 
 Ret is pure python (3.6+) with no dependencies.
