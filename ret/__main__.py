@@ -151,10 +151,10 @@ def main() -> NoReturn:
     else:
         raise NotImplementedError
 
-    if not output:  # It didn't match 😔
+    if not output:  # It didn't match
         sys.exit(1)
 
-    # It matched 😄
+    # It matched!
     # Get the group to return (default is 0, the entire match)
     try:
         group: Union[str, int] = int(args.group)  # type: ignore
