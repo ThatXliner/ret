@@ -22,11 +22,13 @@ or using pipx
     $ pipx install ret
     ✨🍰✨
 
-Ret is pure python (3.6+) with no dependencies.
+Ret is pure python (tested on python 3.6+) with no dependencies.
+
+That way, you can get a clean uninstall.
 
 .. note::
 
-	If you want to install the bleeding edge version of ret, right when it gets pushed to master, see `here <https://github.com/ThatXliner/ret/blob/master/CONTRIBUTING.md>`_ for instructions.
+	If you want to install the bleeding edge version of ret, right when it gets pushed to master, see `here <https://github.com/ThatXliner/ret/blob/master/CONTRIBUTING.md#development-installation>`_ for instructions.
 
 
 
@@ -61,6 +63,51 @@ and even all occurrences of a pattern **with capture groups**:
     foo
     bar
 
+----
+
+While those may seem untypical use cases, I have found myself using ``Ret`` countless times.
+
+Imagine this: you have just downloaded a bunch of tarballs, and have ran
+
+.. code-block:: bash
+
+   for x in $(grep ".+\.tar\.gz"); do tar -xzf $x; done
+
+Now you just want to ``cd`` into all of the extracted files, run :code:`./configure && make && make install`.
+
+You could use ``Ret`` to get the names of the extracted files, just from the tarballs' names. Like this:
+
+.. code-block:: bash
+
+   $ ls | grep ".+\.tar\.gz"
+   foo.tar.gz
+   bar.tar.gz
+   foobar.tar.gz
+   extractme.tar.gz
+
+
+   $ ls | ret "(.+\.tar\.gz)" f -g 1
+   foo
+   bar
+   foobar
+   extractme
+
+
+and with that combined, we can do
+
+.. code-block:: bash
+
+   $ for x in (ls | ret "(.+\.tar\.gz)" f -g 1); do {
+      current_dir=`pwd`;
+      cd $current_dir &&
+      ./configure && make && make install &&
+      cd $current_dir}; done
+   ✨🍰✨
+
+A life saver.
+
+----
+
 And remember, this is python regex: a very powerful regular expression engine.
 
 The possibilities of usage are endless.
@@ -71,8 +118,6 @@ Demonstration
 .. image:: https://raw.githubusercontent.com/ThatXliner/ret/master/assets/demo.svg
    :alt: Demonstration photo
 
-
-This is only just *one* use case.
 
 Background
 -------------
