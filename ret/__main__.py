@@ -18,49 +18,19 @@ import functools
 import operator
 import re
 import sys
-from typing import List, Match, Optional, Pattern, Union, Iterator, NoReturn
 from collections.abc import Iterable
+from typing import Iterator, List, Match, NoReturn, Optional, Pattern, Union
+
 from . import __version__
 
 ACTION_CHOICES: List[str] = ["match", "m", "search", "s", "findall", "f"]
 
-parser = argparse.ArgumentParser(
-    description="A regex tool for the command line",
-    prog="ret",
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-)
+###
+# Define re-flags options
+###
 
-parser.add_argument("regex", help="The regex to use")
-parser.add_argument(
-    "action",
-    choices=ACTION_CHOICES,
-    help="What to do with the regex. Options are %s" % ", ".join(ACTION_CHOICES),
-    metavar="ACTION",
-    default="search",
-)
-parser.add_argument(
-    "input",
-    nargs="?",
-    help="The input file to read from",
-    default=sys.stdin,
-    type=argparse.FileType(mode="r"),
-)
-
-parser.add_argument(
-    "--group", "-g", help="The group to return", default="0", dest="group"
-)
-parser.add_argument(
-    "--version",
-    action="version",
-    version=__version__,
-    help="Print the version information and exit. "
-    "It's very minimal: just the version number. "
-    "No program name, nada.",
-)
-
-
-flags = parser.add_argument_group("flags", description="The regex flags to add")
-
+with_flags: argparse.ArgumentParser = argparse.ArgumentParser(add_help=False)
+flags = with_flags.add_argument_group("flags", description="The regex flags to add")
 flags.add_argument(
     "-i",
     "--ignore-case",
@@ -102,12 +72,73 @@ flags.add_argument(
     help="Make `.` also match whitespace characters",
     dest="re_flags",
 )
+
+###
+# Define capture group options
+###
+
+with_group: argparse.ArgumentParser = argparse.ArgumentParser(add_help=False)
+with_group.add_argument(
+    "--group", "-g", help="The group to return", default="0", dest="group"
+)
+
+###
+# Main parser
+###
+
+parser = argparse.ArgumentParser(
+    description="A regex tool for the command line",
+    prog="ret",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+parser.add_argument("regex", help="The regex to use")
+parser.add_argument(
+    "input",
+    nargs="?",
+    help="The input file to read from",
+    default=sys.stdin,
+    type=argparse.FileType(mode="r"),
+)
+
+parser.add_argument(
+    "--version",
+    action="version",
+    version=__version__,
+    help="Print the version information and exit. "
+    "It's very minimal: just the version number. "
+    "No program name, nada.",
+)
 parser.add_argument(
     "--verbose",
     "--debug",
     action="store_true",
     help="Activate verbose output (a.k.a. debug mode)",
     default=False,
+)
+
+###
+# Actions
+###
+
+actions = parser.add_subparsers(
+    title="actions",
+    dest="action",
+    metavar="ACTION",
+    help="What to do with the regex. Options are %s" % ", ".join(ACTION_CHOICES),
+)
+match_parser = actions.add_parser(
+    "match", aliases=("m"), parents=[with_flags, with_group]
+)
+
+search_parser = actions.add_parser(
+    "search", aliases=("s"), parents=[with_flags, with_group]
+)
+
+findall_parser = actions.add_parser(
+    "findall", aliases=("f"), parents=[with_flags, with_group]
+)
+findall_parser.add_argument(
+    "--output-sep", "-s", help="Output separator", default="\n", dest="sep"
 )
 
 
@@ -135,15 +166,18 @@ def main() -> NoReturn:
     with args.input as input_file:  # type: ignore
         text_input: str = input_file.read()  # type: ignore
 
+    # Default to "search"
+    action: str = args.action or "search"  # type: ignore
+
     # Determine what action to take
-    if args.action in {"match", "m"}:  # type: ignore
+    if action in {"match", "m"}:
         output: Union[Iterator[Match[str]], Optional[Match[str]]] = pattern.match(
             text_input
         )
-    elif args.action in {"search", "s"}:  # type: ignore
+    elif action in {"search", "s"}:
         output = pattern.search(text_input)
 
-    elif args.action in {"findall", "f"}:  # type: ignore
+    elif action in {"findall", "f"}:
         output = pattern.finditer(text_input)
 
     # elif args.action in {"split", "sp"}:  # type: ignore
@@ -165,7 +199,8 @@ def main() -> NoReturn:
     try:
         assert output
         if isinstance(output, Iterable):  # If it was `findall`
-            print("\n".join([match[group] for match in output]))
+            assert isinstance(args.sep, str)  # type: ignore
+            print(args.sep.join([match[group] for match in output]))
         else:
             print(output[group])
     except IndexError as index:
