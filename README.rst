@@ -44,7 +44,7 @@ You can use ``Ret`` to extract text via regex capture groups:
 
     $ git branch
     * master
-    $ git branch | ret "\* (\w+)" --group 1
+    $ git branch | ret "\* (\w+)" s --group 1
     master
 
 ...finding all occurrences of a pattern:
