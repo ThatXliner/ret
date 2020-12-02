@@ -15,6 +15,7 @@ Better than ``grep`` 😃👍
 """
 import argparse
 import functools
+import logging
 import operator
 import re
 import sys
@@ -114,6 +115,7 @@ parser.add_argument(
     action="store_true",
     help="Activate verbose output (a.k.a. debug mode)",
     default=False,
+    dest="verbose",
 )
 
 ###
@@ -153,22 +155,31 @@ def main() -> NoReturn:
     """
 
     args = parser.parse_args()
+    logging.basicConfig(
+        format="%(asctime)s -- %(levelname)s: %(message)s",
+        datefmt="%m/%d/%Y %I:%M:%S %p",
+        level=logging.DEBUG if args.verbose else logging.WARN,  # type: ignore
+    )
+    logging.info("Processing regex flags")
     re_flags: int = functools.reduce(
         operator.or_,  # type: ignore
         args.re_flags if args.re_flags is not None else [0],  # type: ignore
     )
+    logging.info("Creating pattern object")
     pattern: Pattern[str] = re.compile(
         args.regex,  # type: ignore
-        flags=re_flags or 0,
+        flags=re_flags or 0,  # XXX: Unnecessary?
     )
 
+    logging.info("Reading file %r", args.input.name)  # type: ignore
     # NOTE: Memory-map?
     with args.input as input_file:  # type: ignore
         text_input: str = input_file.read()  # type: ignore
 
     # Default to "search"
     action: str = args.action or "search"  # type: ignore
-
+    logging.info("Regex action: %s", action)
+    logging.info("Matching...")
     # Determine what action to take
     if action in {"match", "m"}:
         output: Union[Iterator[Match[str]], Optional[Match[str]]] = pattern.match(
@@ -185,6 +196,7 @@ def main() -> NoReturn:
     else:
         raise NotImplementedError
 
+    logging.info("Did not match, returning...")
     if not output:  # It didn't match
         sys.exit(1)
 
@@ -194,19 +206,29 @@ def main() -> NoReturn:
         group: Union[str, int] = int(args.group)  # type: ignore
     except ValueError:
         group: Union[str, int] = str(args.group)  # type: ignore
+    logging.info("Matched. Capture group: %r", group)
 
     # Print the group
     try:
         assert output
         if isinstance(output, Iterable):  # If it was `findall`
             assert isinstance(args.sep, str)  # type: ignore
+            logging.info(
+                "Outputting %r, joined by sep: %r, with group: %r",
+                output,
+                args.sep,
+                group,
+            )
             print(args.sep.join([match[group] for match in output]))
         else:
+            logging.info("Outputting %r, with group: %r", output, group)
             print(output[group])
     except IndexError as index:
         raise ValueError(
             f"{group} is not a valid group identifier. You probably did a typo..."
         ) from index
+
+    logging.info("Done.")
     sys.exit(0)
 
 
