@@ -82,7 +82,7 @@ findall_parser = actions.add_parser("findall", aliases=("f"), parents=flag_with_
 findall_parser.add_argument(
     "--output-sep", "-s", help="Output separator", default="\n", dest="sep"
 )
-parser.set_defaults(re_flags=[0], group=0)
+parser.set_defaults(re_flags=None, group=0)
 
 
 def main() -> NoReturn:
@@ -104,12 +104,12 @@ def main() -> NoReturn:
     logging.info("Processing regex flags")
     re_flags: int = functools.reduce(
         operator.or_,  # type: ignore
-        args.re_flags if args.re_flags is not None else [0],  # type: ignore
+        args.re_flags or [0],  # type: ignore
     )
     logging.info("Creating pattern object")
     pattern: Pattern[str] = re.compile(
         args.regex,  # type: ignore
-        flages=args.re_flags,  # type: ignore
+        flags=re_flags,
     )
 
     logging.info("Reading file %r", args.input.name)  # type: ignore
