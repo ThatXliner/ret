@@ -21,66 +21,10 @@ import sys
 from collections.abc import Iterable
 from typing import Iterator, List, Match, NoReturn, Optional, Pattern, Union
 
-from . import __version__
+from . import __version__, cmd_opts
 
 ACTION_CHOICES: List[str] = ["match", "m", "search", "s", "findall", "f"]
 
-###
-# Define re-flags options
-###
-
-with_flags: argparse.ArgumentParser = argparse.ArgumentParser(add_help=False)
-flags = with_flags.add_argument_group("flags", description="The regex flags to add")
-flags.add_argument(
-    "-i",
-    "--ignore-case",
-    action="append_const",
-    const=re.IGNORECASE,
-    help="Match case-insensitively",
-    dest="re_flags",
-)
-flags.add_argument(
-    "-x",
-    "--extended-re",
-    action="append_const",
-    const=re.VERBOSE,
-    help="Use extended regex where whitespace doesn't matter and you can use # Comments",
-    dest="re_flags",
-)
-flags.add_argument(
-    "-a",
-    "--ascii",
-    action="append_const",
-    const=re.ASCII,
-    help=R"Make \w, \W, \b, \B, \d, \D, \s and \S only match ASCII characters",
-    dest="re_flags",
-)
-flags.add_argument(
-    "-m",
-    "--multiline",
-    action="append_const",
-    const=re.MULTILINE,
-    help="Use multiline matching. `^` and `$` will now match the beginning "
-    "and end of each line.",
-    dest="re_flags",
-)
-flags.add_argument(
-    "-d",
-    "--dotall",
-    action="append_const",
-    const=re.DOTALL,
-    help="Make `.` also match whitespace characters",
-    dest="re_flags",
-)
-
-###
-# Define capture group options
-###
-
-with_group: argparse.ArgumentParser = argparse.ArgumentParser(add_help=False)
-with_group.add_argument(
-    "--group", "-g", help="The group to return", default="0", dest="group"
-)
 
 ###
 # Main parser
@@ -119,24 +63,18 @@ parser.add_argument(
 ###
 # Actions
 ###
-
+flag_with_group = [cmd_opts.with_flags, cmd_opts.with_group]
 actions = parser.add_subparsers(
     title="actions",
     dest="action",
     metavar="ACTION",
     help="What to do with the regex. Options are %s" % ", ".join(ACTION_CHOICES),
 )
-match_parser = actions.add_parser(
-    "match", aliases=("m"), parents=[with_flags, with_group]
-)
+match_parser = actions.add_parser("match", aliases=("m"), parents=flag_with_group)
 
-search_parser = actions.add_parser(
-    "search", aliases=("s"), parents=[with_flags, with_group]
-)
+search_parser = actions.add_parser("search", aliases=("s"), parents=flag_with_group)
 
-findall_parser = actions.add_parser(
-    "findall", aliases=("f"), parents=[with_flags, with_group]
-)
+findall_parser = actions.add_parser("findall", aliases=("f"), parents=flag_with_group)
 findall_parser.add_argument(
     "--output-sep", "-s", help="Output separator", default="\n", dest="sep"
 )
