@@ -38,10 +38,12 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("regex", help="The regex to use")
 parser.add_argument(
-    "input",
+    "--file",
+    "--input",
     nargs="?",
     help="The input file to read from",
     default=sys.stdin,
+    dest="input",
     type=argparse.FileType(mode="r"),
 )
 
@@ -80,6 +82,7 @@ findall_parser = actions.add_parser("findall", aliases=("f"), parents=flag_with_
 findall_parser.add_argument(
     "--output-sep", "-s", help="Output separator", default="\n", dest="sep"
 )
+parser.set_defaults(re_flags=[0], group=0)
 
 
 def main() -> NoReturn:
@@ -106,7 +109,7 @@ def main() -> NoReturn:
     logging.info("Creating pattern object")
     pattern: Pattern[str] = re.compile(
         args.regex,  # type: ignore
-        flags=re_flags or 0,  # XXX: Unnecessary?
+        flages=args.re_flags,  # type: ignore
     )
 
     logging.info("Reading file %r", args.input.name)  # type: ignore
