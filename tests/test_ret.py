@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=all
 import platform
-import subprocess
 import shlex
+import subprocess
+
+import pytest
+
 from ret import __version__
 from ret.__main__ import ACTION_CHOICES
-import pytest
 
 
 def _pipe_command(command1: str, command2: str) -> str:
@@ -93,18 +95,18 @@ class TestClass:
 
     def test_flags(self):
         assert (
-            _pipe_command(self.ls, ' python -m ret "LICeNSE" --ignore-case -i f')
+            _pipe_command(self.ls, ' python -m ret "LICeNSE" f --ignore-case -i')
             == "LICENSE"
         )
         assert (
             _pipe_command(
                 self.ls,
-                ' python -m ret " \n\n# Comments yay\nLICENSE     " -x --extended-re f',
+                ' python -m ret " \n\n# Comments yay\nLICENSE     " f -x --extended-re',
             )
             == "LICENSE"
         )
         assert (
-            _pipe_command(self.ls, ' python -m ret "ret" -i --ignore-case f') == "ret"
+            _pipe_command(self.ls, ' python -m ret "ret" f -i --ignore-case') == "ret"
         )
         als = 'echo "%s"' % "\n".join(
             (
@@ -118,10 +120,10 @@ class TestClass:
             )
         )
         assert (
-            _pipe_command(als, R' python -m ret "L\w+" -a --ascii f')
+            _pipe_command(als, R' python -m ret "L\w+" f -a --ascii')
             == "LC\nLREADME"
         )
         assert (
-            _pipe_command(self.ls, 'python -m ret "LICENSE" -m --multiline f')
+            _pipe_command(self.ls, 'python -m ret "LICENSE" f -m --multiline')
             == "LICENSE"
         )
