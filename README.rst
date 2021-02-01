@@ -63,9 +63,18 @@ and even all occurrences of a pattern **with capture groups**:
     foo
     bar
 
-----
 
 While those may seem untypical use cases, I have found myself using ``Ret`` countless times.
+
+Here's a one-liner for uninstalling unnecessary stuff for ``pip``:
+
+.. code-block:: bash
+
+   $ pip list --not-required | ret ".+\n.+\n((?:\n|.)+)" f -g 1 | ret "([^\s]+)\s+.+\n" f -g 1 | xargs pip uninstall --yes
+
+
+Another case
+~~~~~~~~~~~
 
 Imagine this: you have just downloaded a bunch of tarballs, and have ran
 
