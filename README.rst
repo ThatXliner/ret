@@ -74,7 +74,7 @@ Here's a one-liner for uninstalling unnecessary stuff for ``pip``:
 
 
 Another case
-~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Imagine this: you have just downloaded a bunch of tarballs, and have ran
 
@@ -84,7 +84,7 @@ Imagine this: you have just downloaded a bunch of tarballs, and have ran
 
 Now you just want to ``cd`` into all of the extracted files, run :code:`./configure && make && make install`.
 
-You could use ``Ret`` to get the names of the extracted files, just from the tarballs' names. Like this:
+You could use ``ret`` to get the names of the extracted files, just from the tarballs' names. Like this:
 
 .. code-block:: bash
 
