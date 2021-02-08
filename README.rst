@@ -1,6 +1,10 @@
 ===
 Ret
 ===
+
+.. image:: https://codecov.io/gh/ThatXliner/ret/branch/master/graph/badge.svg?token=6B5AWYTL1O
+   :target: https://codecov.io/gh/ThatXliner/ret
+    
 A pure-python command-line regular expression tool for stream filtering, extracting,
 and parsing, designed to be minimal with an intuitive command-line interface.
 
