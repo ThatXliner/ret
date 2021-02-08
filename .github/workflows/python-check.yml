@@ -41,7 +41,7 @@ jobs:
           poetry lock
       - name: Test with pytest
         run: |
-          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
+          poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
@@ -82,7 +82,7 @@ jobs:
           poetry lock
       - name: Test with pytest
         run: |
-          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
+          poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
@@ -116,7 +116,7 @@ jobs:
         run: setx path "%path%;C:\hostedtoolcache\windows\Python\3.9.0\x64\Scripts"
       - name: Test with pytest
         run: |
-          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
+          poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
