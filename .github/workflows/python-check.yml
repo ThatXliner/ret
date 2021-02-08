@@ -33,7 +33,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
 
       - name: Install dependencies
         run: |
@@ -42,7 +41,7 @@ jobs:
           poetry lock
       - name: Test with pytest
         run: |
-          poetry run pytest tests/ -vvv --durations=3 --cov=ret
+          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
@@ -75,7 +74,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: 'x64'
 
       - name: Install dependencies
         run: |
@@ -84,7 +82,7 @@ jobs:
           poetry lock
       - name: Test with pytest
         run: |
-          poetry run pytest tests/ -vvv --durations=3 --cov=ret
+          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
@@ -118,7 +116,7 @@ jobs:
         run: setx path "%path%;C:\hostedtoolcache\windows\Python\3.9.0\x64\Scripts"
       - name: Test with pytest
         run: |
-          poetry run pytest tests/ -vvv --durations=3 --cov=ret
+          poetry run pytest -vvv --durations=3 --cov=ret --format=xml tests/
           poetry build
       - name: Send coverage to codecov
         run: curl -s https://codecov.io/bash | bash
