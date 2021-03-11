@@ -5,8 +5,7 @@ Ret
 .. image:: https://codecov.io/gh/ThatXliner/ret/branch/master/graph/badge.svg?token=6B5AWYTL1O
    :target: https://codecov.io/gh/ThatXliner/ret
     
-A pure-python command-line regular expression tool for stream filtering, extracting,
-and parsing, designed to be minimal with an intuitive command-line interface.
+A pure-python command-line regular expression tool for stream filtering, and extracting, designed to be minimal with an intuitive command-line interface.
 
 Installation
 -------------
@@ -42,7 +41,7 @@ Usage
 Example
 ~~~~~~~~
 
-You can use ``Ret`` to extract text via regex capture groups:
+You can use ``ret`` to extract text via regex capture groups:
 
 .. code-block:: bash
 
@@ -146,7 +145,7 @@ Why the name?
 ``Ret`` is an acronym for **r**\ egular **e**\ xpression **t**\ ool.
 
 
-Why it can't replace grep (yet)
+Why it can't replace grep
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``Ret`` originally was designed to provide some features ``grep`` lacks.
@@ -158,5 +157,10 @@ Grep is great for searching directories while
 Furthermore, you cannot guarantee that ``ret`` is installed on the machine.
 
 Also, ``Ret`` relies on the (slow) python regex engine.
+
+What about sed?
+~~~~~~~~~~~~~~~~
+Sed is for find-and-replacing streams. Ret's different. But together, you can do some powerful things
+
 
 Feel free to contribute!
