@@ -23,6 +23,7 @@ flags.add_argument(
 )
 flags.add_argument(
     "-x",
+    "-e",
     "--extended-re",
     action="append_const",
     const=re.VERBOSE,
@@ -48,6 +49,7 @@ flags.add_argument(
 )
 flags.add_argument(
     "-d",
+    "-s",
     "--dotall",
     action="append_const",
     const=re.DOTALL,
