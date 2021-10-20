@@ -98,7 +98,7 @@ You could use ``ret`` to get the names of the extracted files, just from the tar
    extractme.tar.gz
 
 
-   $ ls | ret "(.+\.tar\.gz)" f -g 1
+   $ ls | ret "(.+)\.tar\.gz" f -g 1
    foo
    bar
    foobar
@@ -109,11 +109,10 @@ and with that combined, we can do
 
 .. code-block:: bash
 
-   $ for x in (ls | ret "(.+\.tar\.gz)" f -g 1); do {
-      current_dir=`pwd`;
-      cd $current_dir &&
+   $ for x in (ls | ret "(.+)\.tar\.gz" f -g 1); do {
+      cd $x &&
       ./configure && make && make install &&
-      cd $current_dir}; done
+      cd -}; done
    ✨🍰✨
 
 A life saver.
