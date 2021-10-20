@@ -43,8 +43,8 @@ jobs:
         run: |
           poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
-      - name: Send coverage to codecov
-        run: curl -s https://codecov.io/bash | bash
+      - name: Upload to CodeCov
+        uses: codecov/codecov-action@v2
   "pytest-MacOS":
     strategy:
       matrix:
@@ -84,8 +84,8 @@ jobs:
         run: |
           poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
-      - name: Send coverage to codecov
-        run: curl -s https://codecov.io/bash | bash
+      - name: Upload to CodeCov
+        uses: codecov/codecov-action@v2
   "pytest-Windows":
     strategy:
       matrix:
@@ -118,5 +118,5 @@ jobs:
         run: |
           poetry run pytest -vvv --durations=3 --cov=ret --cov-report=xml tests/
           poetry build
-      - name: Send coverage to codecov
-        run: curl -s https://codecov.io/bash | bash
+      - name: Upload to CodeCov
+        uses: codecov/codecov-action@v2
