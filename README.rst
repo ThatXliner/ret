@@ -1,3 +1,5 @@
+**Note: I'm not maintaining ret anymore.** Check out `rt <https://github.com/ThatXliner/rt>`_ instead.
+
 ===
 Ret
 ===
@@ -157,9 +159,9 @@ Furthermore, you cannot guarantee that ``ret`` is installed on the machine.
 
 Also, ``Ret`` relies on the (slow) python regex engine.
 
-What about sed?
+What about sed? or awk?
 ~~~~~~~~~~~~~~~~
-Sed is for find-and-replacing streams. Ret's different. But together, you can do some powerful things
+Sed is for find-and-replacing streams. Ret's different. But together, you can do some powerful things. Awk is actually pretty as well if you learned it.
 
 
 Feel free to contribute!
